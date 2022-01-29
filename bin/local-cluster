@@ -21,3 +21,15 @@ nodes:
     hostPort: 8443
     protocol: TCP
 EOF
+
+# https://kind.sigs.k8s.io/docs/user/loadbalancer/#create-the-memberlist-secrets
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/master/manifests/namespace.yaml
+kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/master/manifests/metallb.yaml
+kubectl apply -f ./local/metallb-configmap.yaml
+
+helm repo add kong https://charts.konghq.com
+helm repo update
+
+helm install kong kong/kong
+kubectl apply -f ./local/ingress.yaml
