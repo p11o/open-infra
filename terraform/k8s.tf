@@ -3,6 +3,12 @@ provider "kubernetes" {
   config_context = "kind-kind"
 }
 
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/config"
+  }
+}
+
 # tf state
 terraform {
   backend "kubernetes" {
