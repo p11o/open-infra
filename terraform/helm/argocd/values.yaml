@@ -2,3 +2,18 @@ server:
   service:
     # Only needed for local setup in order to get an IP
     type: LoadBalancer
+
+  additionalApplications:
+    - name: nginx
+      destination:
+        namespace: default
+        server: 'https://kubernetes.default.svc'
+      project: default
+      source:
+        path: nginx
+        repoURL: 'https://github.com/mjpuser/argo-apps.git'
+        targetRevision: HEAD
+      syncPolicy:
+        automated:
+          prune: false
+          selfHeal: false
