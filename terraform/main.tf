@@ -51,6 +51,10 @@ resource "helm_release" "kong" {
 
   repository = "https://charts.konghq.com"
   chart      = "kong"
+
+  values = [
+    file("./helm/kong/values.yaml")
+  ]
 }
 
 # argo

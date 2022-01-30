@@ -1,0 +1,14 @@
+ingressController:
+  enabled: false
+
+dblessConfig:
+  config: |
+    _format_version: "2.1"
+
+    services:
+    - name: nginx-service
+      url: http://nginx.default
+      routes:
+      - name: nginx-route
+        paths:
+        - /
