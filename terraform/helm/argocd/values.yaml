@@ -1,0 +1,4 @@
+server:
+  service:
+    # Only needed for local setup in order to get an IP
+    type: LoadBalancer
