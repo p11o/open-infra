@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowEventBinding
+metadata:
+  name: sample
+  namespace: argo
+spec:
+  event:
+    selector: payload.workflow == "wf" && payload.message != ""
+  submit:
+    workflowTemplateRef:
+      name: sample
+    arguments:
+      parameters:
+      - name: message
+        valueFrom:
+          event: payload.message

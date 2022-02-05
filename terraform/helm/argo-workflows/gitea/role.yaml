@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: gitea
+  namespace: argo
+rules:
+- apiGroups: [""]
+  resources: ["workflows.argoproj.io"]
+  verbs: ["update", "list"]
+# the executor for workflows needs to be able to complete `wait`
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["watch"]

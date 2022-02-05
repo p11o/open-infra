@@ -1,0 +1,18 @@
+server:
+  # Set to load balancer so that Kind assigns an IP
+  serviceType: LoadBalancer
+
+  # local setup.  Should use sso
+  extraArgs:
+  - --auth-mode=server
+
+controller:
+  # default is set to docker which is deprecated
+  # k8sapi is also the only thing i got working for local workflows
+  # or else it was doing x509 errors validating the cert
+  containerRuntimeExecutor: k8sapi
+executor:
+  env:
+  # Only set for local setup.
+  - name: ARGO_KUBELET_INSECURE
+    value: true

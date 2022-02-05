@@ -2,7 +2,7 @@
 
 set -e
 
-cat <<EOF | kind create cluster --config=-
+cat <<EOF | kind create cluster --image=kindest/node:v1.23.3 --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
@@ -24,11 +24,8 @@ EOF
 
 cd terraform && terraform apply -auto-approve
 
-ARGO_URL=$(kubectl -n argo get svc -lapp.kubernetes.io/name=argocd-server -o json | jq '.items[].status.loadBalancer.ingress[].ip' -r)
-ARGO_PASSWORD=$(kubectl -n argo get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
-echo Argo URL: http://${ARGO_URL}
-echo Username: admin
-echo Password: ${ARGO_PASSWORD}
+ARGO_URL=$(kubectl -n argo get svc -lapp.kubernetes.io/name=argo-workflows-server -o json | jq '.items[].status.loadBalancer.ingress[].ip' -r)
+echo Argo URL: http://${ARGO_URL}:2746/
 
 KONG_URL=$(kubectl -n kong get svc -lapp.kubernetes.io/instance=kong -o json | jq '.items[].status.loadBalancer.ingress[].ip' -r)
 echo Kong URL: http://${KONG_URL}
