@@ -13,6 +13,7 @@ controller:
   containerRuntimeExecutor: k8sapi
 executor:
   env:
-  # Only set for local setup.
+  # Only set for local setup.  Allows workflow executor's `wait`
+  # container to run properly
   - name: ARGO_KUBELET_INSECURE
-    value: true
+    value: "true"

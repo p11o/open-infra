@@ -8,6 +8,6 @@ subjects:
   name: gitea
   apiGroup: ""
 roleRef:
-  kind: Role #this must be Role or ClusterRole
+  kind: Role
   name: gitea
   apiGroup: ""

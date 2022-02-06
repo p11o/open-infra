@@ -88,21 +88,29 @@ resource "helm_release" "argo_workflows" {
 }
 
 resource "kubectl_manifest" "gitea_argo_gitea_role" {
+  depends_on = [ helm_release.argo_workflows ]
   yaml_body = file("./helm/argo-workflows/gitea/role.yaml")
 }
 
 resource "kubectl_manifest" "gitea_argo_gitea_service_account" {
+  depends_on = [ helm_release.argo_workflows ]
   yaml_body = file("./helm/argo-workflows/gitea/service-account.yaml")
 }
 
 resource "kubectl_manifest" "gitea_argo_gitea_role_binding" {
+  depends_on = [
+    kubectl_manifest.gitea_argo_gitea_role,
+    kubectl_manifest.gitea_argo_gitea_service_account,
+  ]
   yaml_body = file("./helm/argo-workflows/gitea/role-binding.yaml")
 }
 
 resource "kubectl_manifest" "sample_workflow_template" {
+  depends_on = [ helm_release.argo_workflows ]
   yaml_body = file("./helm/argo-workflows/workflow/workflow-template/sample.yaml")
 }
 
 resource "kubectl_manifest" "sample_workflow_event_binding" {
+  depends_on = [ kubectl_manifest.sample_workflow_template ]
   yaml_body = file("./helm/argo-workflows/workflow/event-binding/sample.yaml")
 }
