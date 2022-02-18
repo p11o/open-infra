@@ -1,7 +1,7 @@
 memcached:
   enabled: false
 
-config:
-  server:
-    DOMAIN: infra.local
-    STATIC_URL_PREFIX: /gitea
+gitea:
+  config:
+    server:
+      ROOT_URL: http://infra.local/gitea
