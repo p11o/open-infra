@@ -1,0 +1,7 @@
+memcached:
+  enabled: false
+
+config:
+  server:
+    DOMAIN: infra.local
+    STATIC_URL_PREFIX: /gitea

@@ -1,7 +1,4 @@
 server:
-  # Set to load balancer so that Kind assigns an IP
-  serviceType: LoadBalancer
-
   # local setup.  Should use sso
   extraArgs:
   - --auth-mode=server

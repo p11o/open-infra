@@ -2,9 +2,6 @@
 
 SECRET=$(kubectl -n argo get sa gitea -o=jsonpath='{.secrets[0].name}')
 
-export ARGO_TOKEN=$(kubectl -n argo get secret $SECRET -o=jsonpath='{.data.token}' | base64 --decode)
-export ARGO_URL="http://$(kubectl -n argo get svc -lapp.kubernetes.io/name=argo-workflows-server -o json | jq '.items[].status.loadBalancer.ingress[].ip' -r):2746"
-
 function argo-event() {
     echo "arg: $1"
     DEFAULT_MESSAGE='{"message": "hi"}'
@@ -13,3 +10,12 @@ function argo-event() {
         -d "${1:-$DEFAULT_MESSAGE}" \
         -v
 }
+
+# ARGO_URL=$(kubectl -n argo get svc -lapp.kubernetes.io/name=argo-workflows-server -o json | jq '.items[].status.loadBalancer.ingress[].ip' -r)
+# echo Argo URL: http://${ARGO_URL}:2746/
+
+KONG_URL=$(kubectl -n kong get svc -lapp.kubernetes.io/instance=kong -o json | jq '.items[].status.loadBalancer.ingress[].ip' -r)
+echo Kong URL: http://${KONG_URL}
+
+# GITEA_URL=$(kubectl -n gitea get svc gitea-http -o json | jq '.status.loadBalancer.ingress[].ip' -r)
+# echo GITEA URL: http://${GITEA_URL}:3000/

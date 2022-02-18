@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowEventBinding
+metadata:
+  name: docker
+  namespace: argo
+spec:
+  submit:
+    workflowTemplateRef:
+      name: docker
+    arguments:
+      parameters:
+      - name: repo
+        valueFrom:
+          event: repository.clone_url
+      - name: branch
+        valueFrom:
+          event: ref
+      - name: image
+        valueFrom:
+          event: respoitory.name

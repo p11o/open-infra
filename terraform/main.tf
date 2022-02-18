@@ -68,6 +68,25 @@ resource "helm_release" "kong" {
   ]
 }
 
+# gitea
+resource "kubernetes_namespace" "gitea" {
+  metadata {
+    name = "gitea"
+  }
+}
+
+resource "helm_release" "gitea" {
+  name       = "gitea"
+  namespace  = kubernetes_namespace.gitea.metadata.0.name
+
+  repository = "https://dl.gitea.io/charts/"
+  chart      = "gitea"
+
+  values = [
+    file("./helm/gitea/values.yaml")
+  ]
+}
+
 # argo
 resource "kubernetes_namespace" "argo" {
   metadata {
@@ -113,4 +132,14 @@ resource "kubectl_manifest" "sample_workflow_template" {
 resource "kubectl_manifest" "sample_workflow_event_binding" {
   depends_on = [ kubectl_manifest.sample_workflow_template ]
   yaml_body = file("./helm/argo-workflows/workflow/event-binding/sample.yaml")
+}
+
+resource "kubectl_manifest" "docker_workflow_template" {
+  depends_on = [ helm_release.argo_workflows ]
+  yaml_body = file("./helm/argo-workflows/workflow/workflow-template/docker.yaml")
+}
+
+resource "kubectl_manifest" "docker_workflow_event_binding" {
+  depends_on = [ kubectl_manifest.docker_workflow_template ]
+  yaml_body = file("./helm/argo-workflows/workflow/event-binding/docker.yaml")
 }

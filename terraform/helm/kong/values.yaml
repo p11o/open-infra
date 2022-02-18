@@ -6,9 +6,15 @@ dblessConfig:
     _format_version: "2.1"
 
     services:
-    - name: nginx-service
-      url: http://nginx.default
+    - name: gitea
+      url: http://gitea-http.gitea.svc.cluster.local:3000
       routes:
-      - name: nginx-route
+      - name: gitea-route
         paths:
-        - /
+        - /gitea
+    - name: argo
+      url: http://argo-workflows-server.argo.svc.cluster.local:2746
+      routes:
+      - name: argo-route
+        paths:
+        - /argo
