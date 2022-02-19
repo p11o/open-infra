@@ -1,4 +1,5 @@
 server:
+  baseHref: /argo/
   # local setup.  Should use sso
   extraArgs:
   - --auth-mode=server
@@ -8,6 +9,7 @@ controller:
   # k8sapi is also the only thing i got working for local workflows
   # or else it was doing x509 errors validating the cert
   containerRuntimeExecutor: k8sapi
+
 executor:
   env:
   # Only set for local setup.  Allows workflow executor's `wait`
