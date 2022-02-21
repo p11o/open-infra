@@ -24,11 +24,6 @@ EOF
 
 cd terraform && terraform apply -auto-approve
 
-# ARGO_URL=$(kubectl -n argo get svc -lapp.kubernetes.io/name=argo-workflows-server -o json | jq '.items[].status.loadBalancer.ingress[].ip' -r)
-# echo Argo URL: http://${ARGO_URL}:2746/
-
-KONG_URL=$(kubectl -n kong get svc -lapp.kubernetes.io/instance=kong -o json | jq '.items[].status.loadBalancer.ingress[].ip' -r)
-echo Kong URL: http://${KONG_URL}
-
-# GITEA_URL=$(kubectl -n gitea get svc gitea-http -o json | jq '.status.loadBalancer.ingress[].ip' -r)
-# echo GITEA URL: http://${GITEA_URL}:3000/
+echo "------"
+echo "Open http://infra.local/gitea"
+echo "Open http://infra.local/argo"

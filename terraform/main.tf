@@ -49,6 +49,46 @@ resource "helm_release" "metallb" {
   ]
 }
 
+# nginx
+resource "kubernetes_namespace" "nginx" {
+  metadata {
+    name = "nginx"
+  }
+}
+
+resource "helm_release" "ingress-nginx" {
+  name       = "ingress-nginx"
+  namespace  = kubernetes_namespace.nginx.metadata.0.name
+
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx"
+
+  values = [
+    file("./helm/nginx/values.yaml")
+  ]
+}
+
+resource "kubernetes_ingress_v1" "ingress-nginx" {
+  metadata {
+    name = "ingress-infra"
+    namespace = "kong"
+  }
+
+
+  spec {
+    ingress_class_name = "nginx"
+    default_backend {
+      service {
+        name = "kong-kong-proxy"
+        port {
+          number = 80
+        }
+      }
+    }
+  }
+}
+
+
 # kong
 resource "kubernetes_namespace" "kong" {
   metadata {
