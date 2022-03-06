@@ -1,8 +1,8 @@
 # tf state
 terraform {
   backend "kubernetes" {
-    secret_suffix    = "state"
-    config_path      = "~/.kube/config"
+    secret_suffix = "state"
+    config_path   = "~/.kube/config"
   }
 
   required_providers {
@@ -38,9 +38,9 @@ resource "kubernetes_namespace" "metallb_system" {
 }
 
 resource "helm_release" "metallb" {
-  name       = "metallb"
-  namespace  = kubernetes_namespace.metallb_system.metadata.0.name
-  
+  name      = "metallb"
+  namespace = kubernetes_namespace.metallb_system.metadata.0.name
+
   repository = "https://metallb.github.io/metallb"
   chart      = "metallb"
 
@@ -57,8 +57,8 @@ resource "kubernetes_namespace" "nginx" {
 }
 
 resource "helm_release" "ingress-nginx" {
-  name       = "ingress-nginx"
-  namespace  = kubernetes_namespace.nginx.metadata.0.name
+  name      = "ingress-nginx"
+  namespace = kubernetes_namespace.nginx.metadata.0.name
 
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
@@ -70,7 +70,7 @@ resource "helm_release" "ingress-nginx" {
 
 resource "kubernetes_ingress_v1" "ingress-nginx" {
   metadata {
-    name = "ingress-infra"
+    name      = "ingress-infra"
     namespace = kubernetes_namespace.kong.metadata.0.name
   }
 
@@ -97,8 +97,8 @@ resource "kubernetes_namespace" "kong" {
 }
 
 resource "helm_release" "kong" {
-  name       = "kong"
-  namespace  = kubernetes_namespace.kong.metadata.0.name
+  name      = "kong"
+  namespace = kubernetes_namespace.kong.metadata.0.name
 
   repository = "https://charts.konghq.com"
   chart      = "kong"
@@ -116,8 +116,8 @@ resource "kubernetes_namespace" "gitea" {
 }
 
 resource "helm_release" "gitea" {
-  name       = "gitea"
-  namespace  = kubernetes_namespace.gitea.metadata.0.name
+  name      = "gitea"
+  namespace = kubernetes_namespace.gitea.metadata.0.name
 
   repository = "https://dl.gitea.io/charts/"
   chart      = "gitea"
@@ -135,8 +135,8 @@ resource "kubernetes_namespace" "argo" {
 }
 
 resource "helm_release" "argo_workflows" {
-  name       = "argo-workflows"
-  namespace  = kubernetes_namespace.argo.metadata.0.name
+  name      = "argo-workflows"
+  namespace = kubernetes_namespace.argo.metadata.0.name
 
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-workflows"
@@ -147,13 +147,13 @@ resource "helm_release" "argo_workflows" {
 }
 
 resource "kubectl_manifest" "gitea_argo_gitea_role" {
-  depends_on = [ helm_release.argo_workflows ]
-  yaml_body = file("./helm/argo-workflows/gitea/role.yaml")
+  depends_on = [helm_release.argo_workflows]
+  yaml_body  = file("./helm/argo-workflows/gitea/role.yaml")
 }
 
 resource "kubectl_manifest" "gitea_argo_gitea_service_account" {
-  depends_on = [ helm_release.argo_workflows ]
-  yaml_body = file("./helm/argo-workflows/gitea/service-account.yaml")
+  depends_on = [helm_release.argo_workflows]
+  yaml_body  = file("./helm/argo-workflows/gitea/service-account.yaml")
 }
 
 resource "kubectl_manifest" "gitea_argo_gitea_role_binding" {
@@ -164,22 +164,27 @@ resource "kubectl_manifest" "gitea_argo_gitea_role_binding" {
   yaml_body = file("./helm/argo-workflows/gitea/role-binding.yaml")
 }
 
+resource "kubectl_manifest" "gitea_argo_proxy" {
+  depends_on = [kubectl_manifest.gitea_argo_gitea_service_account]
+  yaml_body  = file("./helm/argo-workflows/gitea/gitea-to-argo.yaml")
+}
+
 resource "kubectl_manifest" "sample_workflow_template" {
-  depends_on = [ helm_release.argo_workflows ]
-  yaml_body = file("./helm/argo-workflows/workflow/workflow-template/sample.yaml")
+  depends_on = [helm_release.argo_workflows]
+  yaml_body  = file("./helm/argo-workflows/workflow/workflow-template/sample.yaml")
 }
 
 resource "kubectl_manifest" "sample_workflow_event_binding" {
-  depends_on = [ kubectl_manifest.sample_workflow_template ]
-  yaml_body = file("./helm/argo-workflows/workflow/event-binding/sample.yaml")
+  depends_on = [kubectl_manifest.sample_workflow_template]
+  yaml_body  = file("./helm/argo-workflows/workflow/event-binding/sample.yaml")
 }
 
 resource "kubectl_manifest" "docker_workflow_template" {
-  depends_on = [ helm_release.argo_workflows ]
-  yaml_body = file("./helm/argo-workflows/workflow/workflow-template/docker.yaml")
+  depends_on = [helm_release.argo_workflows]
+  yaml_body  = file("./helm/argo-workflows/workflow/workflow-template/docker.yaml")
 }
 
 resource "kubectl_manifest" "docker_workflow_event_binding" {
-  depends_on = [ kubectl_manifest.docker_workflow_template ]
-  yaml_body = file("./helm/argo-workflows/workflow/event-binding/docker.yaml")
+  depends_on = [kubectl_manifest.docker_workflow_template]
+  yaml_body  = file("./helm/argo-workflows/workflow/event-binding/docker.yaml")
 }
