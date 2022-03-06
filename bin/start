@@ -2,7 +2,9 @@
 
 set -e
 
-cat <<EOF | kind create cluster --image=kindest/node:v1.23.3 --config=-
+K8S_VERSION=1.23.3
+
+cat <<EOF | kind create cluster --image=kindest/node:v${K8S_VERSION} --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
