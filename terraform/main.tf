@@ -71,7 +71,7 @@ resource "helm_release" "ingress-nginx" {
 resource "kubernetes_ingress_v1" "ingress-nginx" {
   metadata {
     name = "ingress-infra"
-    namespace = "kong"
+    namespace = kubernetes_namespace.nginx.metadata.0.name
   }
 
 
