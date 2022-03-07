@@ -151,22 +151,94 @@ resource "kubectl_manifest" "gitea_argo_gitea_role" {
   yaml_body  = file("./helm/argo-workflows/gitea/role.yaml")
 }
 
-resource "kubectl_manifest" "gitea_argo_gitea_service_account" {
-  depends_on = [helm_release.argo_workflows]
-  yaml_body  = file("./helm/argo-workflows/gitea/service-account.yaml")
+resource "kubernetes_service_account_v1" "gitea" {
+  metadata {
+    name      = "gitea"
+    namespace = kubernetes_namespace.argo.metadata.0.name
+  }
+  # exports default_secret_name
+}
+
+resource "kubernetes_config_map_v1" "gitea_to_argo_config" {
+  metadata {
+    name      = "gitea-to-argo"
+    namespace = kubernetes_namespace.argo.metadata.0.name
+  }
+
+  data = {
+    "nginx.conf.template" = "${file("./kubernetes/argo/configmap/gitea-to-argo/nginx.conf.template")}"
+  }
+}
+
+resource "kubernetes_deployment_v1" "gitea_to_argo" {
+  metadata {
+    name      = "gitea-to-argo"
+    namespace = kubernetes_namespace.argo.metadata.0.name
+    labels = {
+      name = "gitea-to-argo"
+    }
+  }
+
+  spec {
+    replicas = 2
+
+    selector {
+      match_labels = {
+        name = "gitea-to-argo"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          name = "gitea-to-argo"
+        }
+      }
+
+      spec {
+        container {
+          image = "nginx:1.21.6"
+          name  = "nginx"
+          port {
+            container_port = 80
+          }
+          env {
+            name = "GITEA_ARGO_TOKEN"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_service_account_v1.gitea.default_secret_name
+                key  = "token"
+              }
+            }
+          }
+
+          volume_mount {
+            mount_path = "/etc/nginx/templates"
+            name       = "config"
+            read_only  = true
+          }
+        }
+        volume {
+          name = "config"
+          config_map {
+            name = "gitea-to-argo"
+            items {
+              key  = "nginx.conf.template"
+              path = "default.conf.template"
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 resource "kubectl_manifest" "gitea_argo_gitea_role_binding" {
   depends_on = [
     kubectl_manifest.gitea_argo_gitea_role,
-    kubectl_manifest.gitea_argo_gitea_service_account,
+    kubernetes_service_account_v1.gitea,
   ]
   yaml_body = file("./helm/argo-workflows/gitea/role-binding.yaml")
-}
-
-resource "kubectl_manifest" "gitea_argo_proxy" {
-  depends_on = [kubectl_manifest.gitea_argo_gitea_service_account]
-  yaml_body  = file("./helm/argo-workflows/gitea/gitea-to-argo.yaml")
 }
 
 resource "kubectl_manifest" "sample_workflow_template" {
