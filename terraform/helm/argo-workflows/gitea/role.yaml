@@ -10,4 +10,4 @@ rules:
 # the executor for workflows needs to be able to complete `wait`
 - apiGroups: [""]
   resources: ["pods"]
-  verbs: ["watch"]
+  verbs: ["watch", "get"]
