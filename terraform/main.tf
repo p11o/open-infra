@@ -233,6 +233,23 @@ resource "kubernetes_deployment_v1" "gitea_to_argo" {
   }
 }
 
+resource "kubernetes_service" "gitea_to_argo" {
+  metadata {
+    name = "gitea-to-argo"
+    namespace = kubernetes_namespace.argo.metadata.0.name
+  }
+
+
+  spec {
+    selector = {
+      name = "gitea-to-argo"
+    }
+    port {
+      port = 80
+    }
+  }
+}
+
 resource "kubectl_manifest" "gitea_argo_gitea_role_binding" {
   depends_on = [
     kubectl_manifest.gitea_argo_gitea_role,

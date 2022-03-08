@@ -5,7 +5,7 @@ metadata:
   namespace: argo
 spec:
   event:
-    selector: payload.workflow == "wf" && payload.message != ""
+    selector: payload.repository.name != ""
   submit:
     workflowTemplateRef:
       name: sample
@@ -13,4 +13,4 @@ spec:
       parameters:
       - name: message
         valueFrom:
-          event: payload.message
+          event: payload.repository.name
