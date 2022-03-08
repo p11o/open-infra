@@ -15,13 +15,12 @@ spec:
       volumes:
         - name: work
           emptyDir: {}
-      script:
+      container:
         image: alpine/git:v2.32.0
         workingDir: /work
         args:
-          - sh
-        # use --depth 1 and --single-branch for fastest possible checkout
-        source: git clone --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
+          - clone
+          - "{{workflow.parameters.repo}}"
         volumeMounts:
           - mountPath: /work
             name: work
