@@ -4,6 +4,8 @@ metadata:
   name: docker
   namespace: argo
 spec:
+  event:
+    selector: payload.repository.name != ""
   submit:
     workflowTemplateRef:
       name: docker
@@ -11,10 +13,10 @@ spec:
       parameters:
       - name: repo
         valueFrom:
-          event: repository.clone_url
+          event: payload.repository.clone_url
       - name: branch
         valueFrom:
-          event: ref
+          event: payload.ref
       - name: image
         valueFrom:
-          event: respoitory.name
+          event: payload.repository.name
