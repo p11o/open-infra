@@ -3,5 +3,5 @@ configInline:
     - name: default
       protocol: layer2
       addresses:
-      # If these are wrong, check the IP in kubectl get nodes -o wide. Has to match the 172.X subnet
-      - 172.19.255.200-172.19.255.202
+      # These will be replaced by terraform
+      - 10.0.0.1-10.0.0.255
