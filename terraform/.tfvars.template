@@ -1,0 +1,1 @@
+metallb_ip_range="${METALLB_IP_RANGE}"
