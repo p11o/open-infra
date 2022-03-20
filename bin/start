@@ -4,7 +4,8 @@ set -e
 
 K8S_VERSION=1.23.4
 
-cat <<EOF | kind create cluster --image=kindest/node:v${K8S_VERSION} --config=-
+function start_k8s() {
+  cat <<EOF | kind create cluster --image=kindest/node:v${K8S_VERSION} --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
@@ -23,19 +24,36 @@ nodes:
     hostPort: 8443
     protocol: TCP
 EOF
+}
 
-KUBE_ADDR_2ND_OCTET=$(kubectl get nodes -o wide -o=jsonpath={.items[0].status.addresses[0].address} | cut -d'.' -f2)
-KUBE_ADDR="172.${KUBE_ADDR_2ND_OCTET}.255.200"
-export METALLB_IP_RANGE="${KUBE_ADDR}-172.${KUBE_ADDR_2ND_OCTET}.255.201"
-envsubst < ./terraform/.tfvars.template > ./terraform/.tfvars
+function set_env() {
+  KUBE_ADDR_2ND_OCTET=$(kubectl get nodes -o wide -o=jsonpath={.items[0].status.addresses[0].address} | cut -d'.' -f2)
+  export KUBE_ADDR="172.${KUBE_ADDR_2ND_OCTET}.255.200"
+  export METALLB_IP_RANGE="${KUBE_ADDR}-172.${KUBE_ADDR_2ND_OCTET}.255.201"
+  envsubst < ./terraform/.tfvars.template > ./terraform/.tfvars
+}
 
-cd terraform && terraform apply -auto-approve -var-file=".tfvars"
+function terraform_k8s_services() {
+  cd terraform && terraform apply -auto-approve -var-file=".tfvars"
+}
 
-echo
-echo "------"
-echo Update /etc/hosts to include
-echo ${KUBE_ADDR}	infra.local
-echo
-echo "------"
-echo "Open http://infra.local/gitea"
-echo "Open http://infra.local/argo"
+function print_info() {
+  echo
+  echo "------"
+  echo Update /etc/hosts to include
+  echo ${KUBE_ADDR}	infra.local
+  echo
+  echo "------"
+  echo "Open http://infra.local/gitea"
+  echo "Open http://infra.local/argo"
+}
+
+
+function main() {
+  start_k8s
+  set_env
+  terraform_k8s_services
+  print_info
+}
+
+main
