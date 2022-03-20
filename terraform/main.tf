@@ -156,9 +156,39 @@ resource "helm_release" "argo_workflows" {
   ]
 }
 
-resource "kubectl_manifest" "gitea_argo_gitea_role" {
-  depends_on = [helm_release.argo_workflows]
-  yaml_body  = file("./helm/argo-workflows/gitea/role.yaml")
+resource "kubernetes_role_v1" "argo_gitea" {
+  metadata {
+    name = "gitea"
+    namespace = kubernetes_namespace.argo.metadata.0.name
+  }
+
+  rule {
+    api_groups     = [""]
+    resources = ["workflows.argoproj.io"]
+    verbs = ["update", "list"]
+  }
+  rule {
+    api_groups = [""]
+    resources = ["pods"]
+    verbs = ["watch", "get"]
+  }
+}
+
+resource "kubernetes_role_binding_v1" "argo_gitea" {
+  metadata {
+    name      = "gitea"
+    namespace = kubernetes_namespace.argo.metadata.0.name
+  }
+  subject {
+    kind      = "ServiceAccount"
+    name      = "gitea"
+    api_group = ""
+  }
+  role_ref {
+    kind      = "Role"
+    name      = "gitea"
+    api_group = "rbac.authorization.k8s.io"
+  }
 }
 
 resource "kubernetes_service_account_v1" "gitea" {
@@ -260,30 +290,22 @@ resource "kubernetes_service" "gitea_to_argo" {
   }
 }
 
-resource "kubectl_manifest" "gitea_argo_gitea_role_binding" {
-  depends_on = [
-    kubectl_manifest.gitea_argo_gitea_role,
-    kubernetes_service_account_v1.gitea,
-  ]
-  yaml_body = file("./helm/argo-workflows/gitea/role-binding.yaml")
-}
-
 resource "kubectl_manifest" "sample_workflow_template" {
   depends_on = [helm_release.argo_workflows]
-  yaml_body  = file("./helm/argo-workflows/workflow/workflow-template/sample.yaml")
+  yaml_body  = file("./kubernetes/argo/workflow-template/sample.yaml")
 }
 
 resource "kubectl_manifest" "sample_workflow_event_binding" {
   depends_on = [kubectl_manifest.sample_workflow_template]
-  yaml_body  = file("./helm/argo-workflows/workflow/event-binding/sample.yaml")
+  yaml_body  = file("./kubernetes/argo/workflow-event-binding/sample.yaml")
 }
 
 resource "kubectl_manifest" "docker_workflow_template" {
   depends_on = [helm_release.argo_workflows]
-  yaml_body  = file("./helm/argo-workflows/workflow/workflow-template/docker.yaml")
+  yaml_body  = file("./kubernetes/argo/workflow-template/docker.yaml")
 }
 
 resource "kubectl_manifest" "docker_workflow_event_binding" {
   depends_on = [kubectl_manifest.docker_workflow_template]
-  yaml_body  = file("./helm/argo-workflows/workflow/event-binding/docker.yaml")
+  yaml_body  = file("./kubernetes/argo/workflow-event-binding/docker.yaml")
 }

@@ -2,7 +2,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: WorkflowEventBinding
 metadata:
   name: sample
-  namespace: argo
 spec:
   event:
     selector: payload.repository.name != ""
