@@ -33,10 +33,6 @@ function set_env() {
   envsubst < ./terraform/.tfvars.template > ./terraform/.tfvars
 }
 
-function terraform_k8s_services() {
-  cd terraform && terraform apply -auto-approve -var-file=".tfvars"
-}
-
 function print_info() {
   echo
   echo "------"
@@ -52,7 +48,7 @@ function print_info() {
 function main() {
   start_k8s
   set_env
-  terraform_k8s_services
+  ./bin/tf-apply
   print_info
 }
 
