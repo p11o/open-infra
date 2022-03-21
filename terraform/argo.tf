@@ -67,7 +67,7 @@ resource "kubernetes_config_map_v1" "gitea_to_argo_config" {
   }
 
   data = {
-    "nginx.conf.template" = "${file("./kubernetes/argo/configmap/gitea-to-argo/nginx.conf.template")}"
+    "default.conf.template" = "${file("./kubernetes/argo/configmap/nginx/default.conf.template")}"
   }
 }
 
