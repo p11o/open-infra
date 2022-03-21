@@ -44,6 +44,7 @@ resource "kubernetes_role_binding_v1" "argo_gitea" {
     kind      = "ServiceAccount"
     name      = "gitea"
     api_group = ""
+    namespace = "argo"
   }
   role_ref {
     kind      = "Role"
