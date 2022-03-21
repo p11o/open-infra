@@ -6,3 +6,5 @@ gitea:
     server:
       DOMAIN: infra.local # set for ssh
       ROOT_URL: http://infra.local/gitea # set for http
+    webhook:
+      ALLOWED_HOST_LIST: gitea-to-argo.argo.svc.cluster.local
