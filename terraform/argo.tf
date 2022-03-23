@@ -125,7 +125,7 @@ resource "kubernetes_deployment_v1" "gitea_to_argo" {
           config_map {
             name = "gitea-to-argo"
             items {
-              key  = "nginx.conf.template"
+              key  = "default.conf.template"
               path = "default.conf.template"
             }
           }
