@@ -6,7 +6,7 @@ metadata:
 spec:
   serviceAccountName: gitea
   entrypoint: main
-  # We use a volume claim template so that we can have a shared workspace.
+  # Shared workspace volume
   volumeClaimTemplates:
     - metadata:
         name: work
@@ -55,27 +55,15 @@ spec:
         parameters:
           - name: path
           - name: image
-      # Mount the configuration so we can push the image.
-      # This should create the /.docker/config.json file.
-      # volumes:
-      #   - name: docker-config
-      #     secret:
-      #       secretName: docker-config
       container:
         image: moby/buildkit:v0.9.3
         volumeMounts:
           - name: work
             mountPath: /work
-          # - name: docker-config
-          #   mountPath: /.docker
         workingDir: "/work/{{workflow.parameters.image}}"
+        # need to run as privileged to build the image
         securityContext:
-          allowPrivilegeEscalation: true
-        # env:
-          # - name: BUILDKITD_FLAGS
-          #   value: --oci-worker-no-process-sandbox
-          # - name: DOCKER_CONFIG
-          #   value: /.docker
+          privileged: true
         command:
           - buildctl-daemonless.sh
         args:
