@@ -15,9 +15,3 @@ dblessConfig:
       - name: gitea-route
         paths:
         - /gitea
-    - name: argo
-      url: http://argo-workflows-server.argo.svc.cluster.local:2746
-      routes:
-      - name: argo-route
-        paths:
-        - /argo
