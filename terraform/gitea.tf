@@ -11,6 +11,7 @@ resource "helm_release" "gitea" {
 
   repository = "https://dl.gitea.io/charts/"
   chart      = "gitea"
+  version    = var.gitea_version
 
   values = [
     file("./helm/gitea/values.yaml")

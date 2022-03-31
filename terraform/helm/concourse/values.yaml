@@ -1,0 +1,10 @@
+web:
+  env:
+    - name: CONCOURSE_EXTERNAL_URL
+      value: http://concourse.infra.local/
+
+worker:
+  env:
+    # using cgroups v2
+    - name: CONCOURSE_RUNTIME
+      value: containerd

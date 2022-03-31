@@ -1,4 +1,4 @@
-# kong
+# # kong
 resource "kubernetes_namespace" "kong" {
   metadata {
     name = "kong"
@@ -11,6 +11,7 @@ resource "helm_release" "kong" {
 
   repository = "https://charts.konghq.com"
   chart      = "kong"
+  version    = var.kong_version
 
   values = [
     file("./helm/kong/values.yaml")

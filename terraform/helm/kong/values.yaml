@@ -9,9 +9,15 @@ dblessConfig:
     _format_version: "2.1"
 
     services:
+    - name: concourse
+      url: http://concourse-web.concourse.svc.cluster.local:8080
+      routes:
+      - name: concourse
+        hosts:
+        - concourse.infra.local
     - name: gitea
       url: http://gitea-http.gitea.svc.cluster.local:3000
       routes:
-      - name: gitea-route
-        paths:
-        - /gitea
+      - name: gitea
+        hosts:
+        - gitea.infra.local

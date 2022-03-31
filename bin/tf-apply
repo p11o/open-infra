@@ -3,7 +3,9 @@
 set -e
 
 function main() {
-  cd terraform && terraform apply -auto-approve -var-file=".tfvars"
+  cd terraform
+  terraform init
+  terraform apply -auto-approve -var-file=".tfvars"
 }
 
 main

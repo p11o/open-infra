@@ -2,17 +2,21 @@
 
 A infrastructure project for a typical tech company.  This project includes OSS projects for:
 
-* Identity Management
-* Project Management
-* CI/CD
-* VCS
-* Prototyping
-* Docker registry
+* Identity Management (dex)
+* Project Management (taiga)
+* CI/CD (concourse)
+* VCS (gitea)
+* Prototyping (Penpot)
+* Docker registry (registry)
+* NPM registry (verdaccio)
+* Python Index (devpi)
+* Secrets (vault)
 
 ## Quickstart
 
 * Run `bin/start`
-* Follow instructions printed after the start command completes (update /etc/hosts)
+
+Still have to automate updating DNS.  There is a dns server that is started, and will most likely need configuration changes.
 
 ## Prereqs
 

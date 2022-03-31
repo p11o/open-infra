@@ -4,5 +4,5 @@ memcached:
 gitea:
   config:
     server:
-      DOMAIN: infra.local # set for ssh
-      ROOT_URL: http://infra.local/gitea # set for http
+      DOMAIN: gitea.infra.local # set for ssh
+      ROOT_URL: http://gitea.infra.local # set for http
