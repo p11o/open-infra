@@ -16,8 +16,6 @@ A infrastructure project for a typical tech company.  This project includes OSS 
 
 * Run `bin/start`
 
-Still have to automate updating DNS.  There is a dns server that is started, and will most likely need configuration changes.
-
 ## Prereqs
 
 * kind
