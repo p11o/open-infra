@@ -8,13 +8,6 @@ function start_k8s() {
   kind create cluster --image=kindest/node:v${K8S_VERSION} --config=kind/cluster.yml
 }
 
-function set_env() {
-  KUBE_ADDR_2ND_OCTET=$(kubectl get nodes -o wide -o=jsonpath={.items[0].status.addresses[0].address} | cut -d'.' -f2)
-  export KUBE_ADDR="172.${KUBE_ADDR_2ND_OCTET}.255.200"
-  export METALLB_IP_RANGE="${KUBE_ADDR}-172.${KUBE_ADDR_2ND_OCTET}.255.202"
-  envsubst < ./terraform/.tfvars.template > ./terraform/.tfvars
-}
-
 function print_info() {
   export DNS_ADDR=$(kubectl -n nginx-udp get svc nginx-udp-ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
   echo
@@ -29,9 +22,8 @@ function print_info() {
 
 function main() {
   start_k8s
-  set_env
-  ./bin/tf-apply
+  ./bin/tf-apply $1
   print_info
 }
 
-main
+main "$@"

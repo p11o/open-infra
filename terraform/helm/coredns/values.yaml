@@ -1,3 +1,4 @@
+# this is edited by tf.  Array order is important
 servers:
 - zones:
   - zone: local
@@ -5,16 +6,18 @@ servers:
   plugins:
   - name: template
     parameters: ANY ANY local
+    # config block is the param edited to update the
     configBlock: |-
-      answer "{{ .Name }} 60 IN A 172.18.255.200"
+      answer "{{ .Name }} 60 IN A 127.0.0.1"
 
-  # Need this for the service to be available
+  # Need this for the service to be available / pass health checks.
   - name: ready
   - name: health
     configBlock: |-
       lameduck 5s
 
-# This is not dns for the k8s cluster.  It's an app.
+# Set to false if you don't want coredns to be service for k8s itself.
+# Setting it to false allows you to use coredns as an external service.
 isClusterService: false
 
 replicaCount: 2
