@@ -16,13 +16,14 @@ function set_env() {
 }
 
 function print_info() {
+  export DNS_ADDR=$(kubectl -n nginx-udp get svc nginx-udp-ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
   echo
   echo "------"
-  echo Update /etc/hosts to include
-  echo ${KUBE_ADDR}	infra.local
+  echo Update dns settings to include ${DNS_ADDR}
   echo
   echo "------"
-  echo "Open http://infra.local/gitea"
+  echo "Open http://concourse.infra.local"
+  echo "Open http://gitea.infra.local"
 }
 
 
