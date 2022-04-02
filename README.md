@@ -2,7 +2,7 @@
 
 A infrastructure project for a typical tech company.  This project includes OSS projects for:
 
-* Identity Management (dex)
+* Identity Management (glauth)
 * Project Management (taiga)
 * CI/CD (concourse)
 * VCS (gitea)
@@ -14,7 +14,9 @@ A infrastructure project for a typical tech company.  This project includes OSS 
 
 ## Quickstart
 
-* Run `bin/start`
+* Run `bin/start [init]`
+
+The optional init param is required for the first run.
 
 ## Prereqs
 
