@@ -3,9 +3,9 @@
 set -e
 
 function set_env() {
+  export NGINX_TCP_IP_ADDR=$(kubectl -n nginx-tcp get svc -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}' 2> /dev/null)
   KUBE_ADDR_2ND_OCTET=$(kubectl get nodes -o wide -o=jsonpath={.items[0].status.addresses[0].address} | cut -d'.' -f2)
   export KUBE_ADDR="172.${KUBE_ADDR_2ND_OCTET}.255.200"
-  export NGINX_TCP_IP_ADDR="127.0.0.1" # initial value
   export METALLB_IP_RANGE="${KUBE_ADDR}-172.${KUBE_ADDR_2ND_OCTET}.255.202"
   envsubst < ./terraform/.tfvars.template > ./terraform/.tfvars
 }

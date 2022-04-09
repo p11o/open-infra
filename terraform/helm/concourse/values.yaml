@@ -1,10 +1,26 @@
 web:
   env:
-    - name: CONCOURSE_EXTERNAL_URL
-      value: http://concourse.infra.local/
+  - name: CONCOURSE_EXTERNAL_URL
+    value: http://concourse.infra.local/
+  - name: CONCOURSE_OAUTH_CLIENT_ID
+    value: concourse
+  - name: CONCOURSE_OAUTH_CLIENT_SECRET
+    value: concourse-secret
+  - name: CONCOURSE_OAUTH_AUTH_URL
+    value: http://dex.infra.local/auth
+  - name: CONCOURSE_OAUTH_TOKEN_URL
+    value: http://dex.dex.svc.cluster.local:5556/token
+  - name: CONCOURSE_OAUTH_USERINFO_URL
+    value: http://dex.dex.svc.cluster.local:5556/userinfo
+  - name: CONCOURSE_OAUTH_SCOPE
+    value: openid,email,profile
+  - name: CONCOURSE_OAUTH_USER_ID_KEY
+    value: sub
+  - name: CONCOURSE_OAUTH_USER_NAME_KEY
+    value: email
 
 worker:
   env:
-    # using cgroups v2
-    - name: CONCOURSE_RUNTIME
-      value: containerd
+  # using cgroups v2
+  - name: CONCOURSE_RUNTIME
+    value: containerd

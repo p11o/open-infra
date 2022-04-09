@@ -2,7 +2,7 @@
 
 A infrastructure project for a typical tech company.  This project includes OSS projects for:
 
-* Identity Management (glauth)
+* Identity Management (dex)
 * Project Management (taiga)
 * CI/CD (concourse)
 * VCS (gitea)

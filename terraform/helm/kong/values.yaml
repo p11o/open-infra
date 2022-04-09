@@ -21,3 +21,9 @@ dblessConfig:
       - name: gitea
         hosts:
         - gitea.infra.local
+    - name: dex
+      url: http://dex.dex.svc.cluster.local:5556
+      routes:
+      - name: dex
+        hosts:
+        - dex.infra.local

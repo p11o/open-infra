@@ -22,3 +22,8 @@ variable "ingress_nginx_version" {
   type        = string
   default     = "4.0.18"
 }
+
+variable "dex_version" {
+  type        = string
+  default     = "0.8.2"
+}
