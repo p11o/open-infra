@@ -16,7 +16,7 @@ A infrastructure project for a typical tech company.  This project includes OSS 
 
 * Run `bin/start [init]`
 
-The optional init param is required for the first run.
+The optional init param is required for the first run.  It triggers the terraform init command.
 
 ## Prereqs
 
