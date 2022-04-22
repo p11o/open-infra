@@ -1,6 +1,6 @@
 config:
   # Set it to a valid URL
-  issuer: http://idp.infra.local
+  issuer: http://dex.infra.local
 
   # See https://dexidp.io/docs/storage/ for more options
   storage:
@@ -13,10 +13,16 @@ config:
   staticClients:
   - id: concourse
     secret: concourse-secret
-    name: 'Concourse'
+    name: Concourse
     # Where the app will be running.
     redirectURIs:
     - 'http://concourse.infra.local/sky/issuer/callback'
+  - id: gitea
+    secret: gitea-secret
+    name: Gitea
+    # Where the app will be running.
+    redirectURIs:
+    - 'http://gitea.infra.local/user/oauth2/dex/callback'
 
 
   staticPasswords:

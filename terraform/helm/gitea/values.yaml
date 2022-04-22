@@ -2,7 +2,17 @@ memcached:
   enabled: false
 
 gitea:
+  admin:
+    username: administrator
+    password: password
+    email: admin@example.com
   config:
     server:
       DOMAIN: gitea.infra.local # set for ssh
       ROOT_URL: http://gitea.infra.local # set for http
+  oauth:
+  - name: dex
+    provider: openidConnect
+    key: gitea
+    secret: gitea-secret
+    autoDiscoverUrl: http://dex.infra.local/.well-known/openid-configuration

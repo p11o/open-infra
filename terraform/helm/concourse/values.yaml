@@ -9,9 +9,9 @@ web:
   - name: CONCOURSE_OAUTH_AUTH_URL
     value: http://dex.infra.local/auth
   - name: CONCOURSE_OAUTH_TOKEN_URL
-    value: http://dex.dex.svc.cluster.local:5556/token
+    value: http://dex.infra.local/token
   - name: CONCOURSE_OAUTH_USERINFO_URL
-    value: http://dex.dex.svc.cluster.local:5556/userinfo
+    value: http://dex.infra.local/userinfo
   - name: CONCOURSE_OAUTH_SCOPE
     value: openid,email,profile
   - name: CONCOURSE_OAUTH_USER_ID_KEY
