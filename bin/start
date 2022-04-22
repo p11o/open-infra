@@ -22,6 +22,7 @@ function print_info() {
 
 function main() {
   start_k8s
+  kubectl -n kube-system delete cm coredns
   ./bin/tf-apply $1
   print_info
 }
