@@ -1,7 +1,7 @@
 infra.local:53 {
     errors
     cache 30
-    forward . ${KUBE_DNS_CLUSTER_IP}
+    forward . ${COREDNS_CLUSTER_IP}
 }
 .:53 {
     errors

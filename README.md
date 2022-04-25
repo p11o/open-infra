@@ -18,6 +18,8 @@ A infrastructure project for a typical tech company.  This project includes OSS 
 
 The optional init param is required for the first run.  It triggers the terraform init command.
 
+* If you make changes to tf, and have already started the cluster, you can run `bin/tf-apply`
+
 ## Prereqs
 
 * kind

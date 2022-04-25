@@ -23,7 +23,17 @@ variable "ingress_nginx_version" {
   default     = "4.0.18"
 }
 
-variable "dex_version" {
+variable "kratos_version" {
   type        = string
-  default     = "0.8.2"
+  default     = "0.23.1"
+}
+
+variable "oauth2_proxy_version" {
+  type        = string
+  default     = "7.2.1"
+}
+
+variable "dex_version" {
+  type  = string
+  default = "0.8.2"
 }

@@ -1,4 +1,4 @@
-# # kong
+# kong
 resource "kubernetes_namespace" "kong" {
   metadata {
     name = "kong"
