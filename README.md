@@ -2,14 +2,14 @@
 
 A infrastructure project for a typical tech company.  This project includes OSS projects for:
 
-* Identity Management (dex)
+* Identity Management (keycloak)
 * Project Management (taiga)
 * CI/CD (concourse)
 * VCS (gitea)
 * Prototyping (Penpot)
-* Docker registry (registry)
-* NPM registry (verdaccio)
-* Python Index (devpi)
+* Docker registry (gitea)
+* NPM registry (gitea)
+* Python Index (gitea)
 * Secrets (vault)
 
 ## Quickstart

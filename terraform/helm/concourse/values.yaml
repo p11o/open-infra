@@ -2,21 +2,15 @@ web:
   env:
   - name: CONCOURSE_EXTERNAL_URL
     value: http://concourse.infra.local/
-  - name: CONCOURSE_OAUTH_CLIENT_ID
+  - name: CONCOURSE_OIDC_CLIENT_ID
     value: concourse
-  - name: CONCOURSE_OAUTH_CLIENT_SECRET
-    value: concourse-secret
-  - name: CONCOURSE_OAUTH_AUTH_URL
-    value: http://dex.infra.local/auth
-  - name: CONCOURSE_OAUTH_TOKEN_URL
-    value: http://dex.infra.local/token
-  - name: CONCOURSE_OAUTH_USERINFO_URL
-    value: http://dex.infra.local/userinfo
-  - name: CONCOURSE_OAUTH_SCOPE
-    value: openid,email,profile
-  - name: CONCOURSE_OAUTH_USER_ID_KEY
-    value: sub
-  - name: CONCOURSE_OAUTH_USER_NAME_KEY
+  - name: CONCOURSE_OIDC_CLIENT_SECRET
+    value: 76Isfn72SyS3oye2GdnBUEym34q6useW
+  - name: CONCOURSE_OIDC_ISSUER
+    value: http://idp.infra.local/auth/realms/master
+  - name: CONCOURSE_OIDC_DISPLAY_NAME
+    value: Keycloak
+  - name: CONCOURSE_OIDC_USER_NAME_KEY
     value: email
 
 worker:

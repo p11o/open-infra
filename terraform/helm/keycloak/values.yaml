@@ -1,0 +1,6 @@
+service:
+  type: ClusterIP
+proxyAddressForwarding: true
+auth:
+  adminUser: admin
+  adminPassword: adminpassword

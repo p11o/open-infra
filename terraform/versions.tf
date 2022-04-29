@@ -27,3 +27,8 @@ variable "dex_version" {
   type        = string
   default     = "0.8.2"
 }
+
+variable "keycloak_version" {
+  type        = string
+  default     = "7.1.18"
+}
