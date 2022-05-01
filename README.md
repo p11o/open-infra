@@ -12,11 +12,23 @@ A infrastructure project for a typical tech company.  This project includes OSS 
 * Python Index (gitea)
 * Secrets (vault)
 
-## Quickstart
+## Running
 
-* Run `bin/start [init]`
+The infrastructure is broken up into stages.
 
-The optional init param is required for the first run.  It triggers the terraform init command.
+### Stage 1
+
+* __k8s__ - create and config kubernetes cluster
+  * metallb
+  * nginx load balancers (udp & tcp)
+* __dns__ - create a dns server, and configure local system to use it
+
+### Stage 2
+
+* __kong__ - HTTP ingress for all apps
+* __keycloak__ - IdP.  Create keycloak and configure api clients (gitea, concourse, etc...) for sso.
+* __gitea__ - git service
+* __concourse__ - CI engine
 
 ## Prereqs
 
