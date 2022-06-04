@@ -1,4 +1,7 @@
+terraform/stage/01/.terraform
 terraform/.terraform
 terraform/.tfvars
 terraform/kubernetes/kube-system/configmap/coredns/Corefile
 terraform/errored.tfstate
+terraform/stage/01/terraform.tfstate
+terraform/stage/01/terraform.tfstate.backup

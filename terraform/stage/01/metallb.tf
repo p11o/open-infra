@@ -6,9 +6,12 @@ resource "kubernetes_namespace" "metallb_system" {
   }
 }
 
-variable "metallb_ip_range" {
-  type        = string
-  description = "IP of the node"
+data "external" "docker_ip_prefix" {
+  program = [
+    "bash",
+    "-c",
+    "ip route show dev docker0 proto kernel | cut -f1,2 -d'.' | sed -E 's/(.*)/{\"ip\":\"\\1\"}/'"
+  ]
 }
 
 resource "helm_release" "metallb" {
@@ -18,12 +21,16 @@ resource "helm_release" "metallb" {
   repository = "https://metallb.github.io/metallb"
   chart      = "metallb"
 
-  values = [
-    file("./helm/metallb/values.yaml")
-  ]
-
+  set {
+    name = "configInline.address-pools[0].name"
+    value = "default"
+  }
+  set {
+    name = "configInline.address-pools[0].protocol"
+    value = "layer2"
+  }
   set {
     name  = "configInline.address-pools[0].addresses[0]"
-    value = var.metallb_ip_range
+    value = "${data.external.docker_ip_prefix.result.ip}.255.200-${data.external.docker_ip_prefix.result.ip}.255.210"
   }
 }
