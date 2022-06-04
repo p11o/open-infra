@@ -10,9 +10,9 @@ gitea:
     server:
       DOMAIN: gitea.infra.local # set for ssh
       ROOT_URL: http://gitea.infra.local # set for http
-  oauth:
-  - name: idp
-    provider: openidConnect
-    key: gitea
-    secret: B6eYiQvkFjh85eYiXaUsCaN3dqnoXhWa
-    autoDiscoverUrl: http://idp.infra.local/auth/realms/master/.well-known/openid-configuration
+  # oauth:
+  # - name: idp
+  #   provider: openidConnect
+  #   key: gitea
+  #   secret: B6eYiQvkFjh85eYiXaUsCaN3dqnoXhWa
+  #   autoDiscoverUrl: http://idp.infra.local/auth/realms/master/.well-known/openid-configuration

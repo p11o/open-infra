@@ -1,2 +1,0 @@
-metallb_ip_range="${METALLB_IP_RANGE}"
-nginx_tcp_ip_address="${NGINX_TCP_IP_ADDR}"
