@@ -17,29 +17,30 @@ resource "helm_release" "nginx_udp" {
 
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
-  # version    = var.ingress_nginx_version
+  version    = var.ingress_nginx_version
 
   set {
     name = "controller.service.enableHttp"
-    value = false
+    value = "false"
   }
 
   set {
     name = "controller.service.enableHttps"
-    value = false
+    value = "false"
   }
 
   set {
-    name = "ingressClassResource.name"
+    name = "controller.ingressClassResource.name"
     value = local.nginx_udp_name
   }
 
   set {
-    name = "ingressClass"
+    name = "controller.ingressClass"
     value = local.nginx_udp_name
   }
 
   set {
     name = "udp.53"
-    value = "${kubernetes_namespace.coredns.metadata.0.name}/coredns-coredns:53"
+    value = "${helm_release.coredns.namespace}/coredns-coredns:53"
+  }
 }

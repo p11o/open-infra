@@ -1,10 +1,8 @@
 
 data "external" "udp_cluster_ip" {
+  depends_on = [helm_release.nginx_udp]
   program = [
-    "kubectl",
-    "-n", kubernetes_namespace.nginx_udp.metadata.0.name,
-    "get", "svc",
-    "-o", "jsonpath='{.items[0].status.loadBalancer.ingress[0]}'"
+    "${path.module}/scripts/cluster-ip.sh", helm_release.nginx_udp.namespace
   ]
 }
 
@@ -20,7 +18,7 @@ resource "kubernetes_config_map_v1" "coredns" {
 infra.local:53 {
     errors
     cache 30
-    forward . ${data.external.udp_cluster_ip.result.ip}
+    forward . ${data.external.udp_cluster_ip.result.clusterIP}
 }
 .:53 {
     errors

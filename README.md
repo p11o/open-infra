@@ -19,12 +19,12 @@ The infrastructure is broken up into stages.
 ### Stage 1
 
 * __k8s__ - create and config kubernetes cluster
-  * metallb
-  * nginx load balancers (udp & tcp)
-* __dns__ - create a dns server, and configure local system to use it
 
 ### Stage 2
 
+* __metallb__
+* __ingress nginx__ - load balancers (udp & tcp)
+* __dns__ - create a dns server, and configure local system to use it
 * __kong__ - HTTP ingress for all apps
 * __keycloak__ - IdP.  Create keycloak and configure api clients (gitea, concourse, etc...) for sso.
 * __gitea__ - git service

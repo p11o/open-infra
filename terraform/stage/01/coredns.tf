@@ -7,16 +7,14 @@ resource "kubernetes_namespace" "coredns" {
 
 
 data "external" "tcp_lb_addr" {
+  depends_on = [helm_release.nginx_tcp]
   program = [
-    "kubectl",
-    "-n", kubernetes_namespace.nginx_tcp.metadata.0.name,
-    "get", "svc",
-    "-o", "jsonpath='{.items[0].status.loadBalancer.ingress[0]}'"
+    "${path.module}/scripts/lb-ip.sh", helm_release.nginx_tcp.namespace
   ]
 }
 
 resource "helm_release" "coredns" {
-  depends_on = [helm_release.nginx_tcp, helm_release.nginx_udp]
+  depends_on = [data.external.tcp_lb_addr]
 
 
   name      = "coredns"
@@ -28,17 +26,17 @@ resource "helm_release" "coredns" {
 
   set {
     name = "replicaCount"
-    value = 1
+    value = "1"
   }
 
   set {
     name = "isClusterService"
-    value = false
+    value = "false"
   }
 
   set {
     name = "servers[0].port"
-    value = 53
+    value = "53"
   }
 
 
@@ -59,7 +57,7 @@ resource "helm_release" "coredns" {
 
   set {
     name  = "servers[0].plugins[0].configBlock"
-    value = " answer \"{{ .Name }} 60 IN A ${data.external.tcp_lb_addr.result.ip}\" "
+    value = "answer \"{{ .Name }} 60 IN A ${data.external.tcp_lb_addr.result.ip}\""
   }
 
 

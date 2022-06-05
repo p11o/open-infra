@@ -17,11 +17,11 @@ resource "helm_release" "nginx_tcp" {
 
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
-  # version    = var.ingress_nginx_version
+  version    = var.ingress_nginx_version
 
   set { 
     name  = "controller.service.enableHttp"
-    value = true
+    value = "true"
   }
 
   set {
