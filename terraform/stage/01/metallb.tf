@@ -8,9 +8,7 @@ resource "kubernetes_namespace" "metallb_system" {
 
 data "external" "docker_ip_prefix" {
   program = [
-    "bash",
-    "-c",
-    "ip route show dev docker0 proto kernel | cut -f1,2 -d'.' | sed -E 's/(.*)/{\"ip\":\"\\1\"}/'"
+    "scripts/host-ip-prefix.sh"
   ]
 }
 
