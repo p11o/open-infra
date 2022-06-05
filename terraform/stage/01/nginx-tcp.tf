@@ -21,7 +21,7 @@ resource "helm_release" "nginx_tcp" {
 
   set { 
     name  = "controller.service.enableHttp"
-    value = "true"
+    value = true
   }
 
   set {

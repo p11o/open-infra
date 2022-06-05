@@ -22,7 +22,7 @@ resource "helm_release" "coredns" {
 
   repository = "https://coredns.github.io/helm"
   chart      = "coredns"
-  #   version    = var.coredns_version
+    version    = var.coredns_version
 
   set {
     name = "replicaCount"

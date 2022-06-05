@@ -21,12 +21,12 @@ resource "helm_release" "nginx_udp" {
 
   set {
     name = "controller.service.enableHttp"
-    value = "false"
+    value = false
   }
 
   set {
     name = "controller.service.enableHttps"
-    value = "false"
+    value = false
   }
 
   set {
