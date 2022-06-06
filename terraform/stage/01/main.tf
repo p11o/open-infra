@@ -4,6 +4,12 @@ terraform {
     secret_suffix = "state"
     config_path   = "~/.kube/config"
   }
+  required_providers {
+    keycloak = {
+      source = "mrparkers/keycloak"
+      version = ">= 3.0.0"
+    }
+  }
 }
 
 # providers
@@ -16,4 +22,11 @@ provider "helm" {
   kubernetes {
     config_path = "~/.kube/config"
   }
+}
+
+provider "keycloak" {
+    client_id     = "admin-cli"
+    username      = var.keycloak_admin_user
+    password      = var.keycloak_admin_password
+    url           = "http://idp.infra.local"
 }

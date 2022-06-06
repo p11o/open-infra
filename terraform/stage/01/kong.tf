@@ -23,18 +23,7 @@ resource "helm_release" "kong" {
     value = "false"
   }
 
-# - name: concourse
-#   url: http://${helm_release.concourse.name}-web.${helm_release.concourse.namespace}.svc.cluster.local:8080
-#   routes:
-#   - name: concourse
-#     hosts:
-#     - concourse.infra.local
-# - name: keycloak
-#   url: http://${helm_release.keycloak.name}-keycloak.${helm_release.keycloak.namespace}.svc.cluster.local
-#   routes:
-#   - name: keycloak
-#     hosts:
-#     - idp.infra.local
+
   set {
     name = "dblessConfig.config"
     value = <<EOT
@@ -47,6 +36,18 @@ services:
   - name: gitea
     hosts:
     - gitea.infra.local
+- name: keycloak
+  url: http://${helm_release.keycloak.name}-keycloak.${helm_release.keycloak.namespace}.svc.cluster.local
+  routes:
+  - name: keycloak
+    hosts:
+    - idp.infra.local
+- name: concourse
+  url: http://${helm_release.concourse.name}-web.${helm_release.concourse.namespace}.svc.cluster.local:8080
+  routes:
+  - name: concourse
+    hosts:
+    - concourse.infra.local
 EOT
   
   }

@@ -8,7 +8,7 @@ resource "kubernetes_namespace" "metallb_system" {
 
 data "external" "docker_ip_prefix" {
   program = [
-    "scripts/host-ip-prefix.sh"
+    "${path.module}/scripts/host-ip-prefix.sh"
   ]
 }
 
