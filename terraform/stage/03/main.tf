@@ -1,13 +1,17 @@
 # tf state
 terraform {
   backend "kubernetes" {
-    secret_suffix = "state"
+    secret_suffix = "stage03-state"
     config_path   = "~/.kube/config"
   }
   required_providers {
     keycloak = {
       source = "mrparkers/keycloak"
       version = ">= 3.0.0"
+    }
+    kong = {
+      source = "noderadius/kong"
+      version = ">= 6.7.0"
     }
   }
 }
@@ -24,9 +28,14 @@ provider "helm" {
   }
 }
 
+
 provider "keycloak" {
-    client_id     = "admin-cli"
-    username      = var.keycloak_admin_user
-    password      = var.keycloak_admin_password
-    url           = "http://idp.infra.local"
+  client_id     = "admin-cli"
+  username      = "admin"
+  password      = "adminpassword"
+  url           = "http://idp.infra.local"
+}
+
+provider "kong" {
+    kong_admin_uri = "http://kong.infra.local"
 }

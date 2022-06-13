@@ -1,4 +1,4 @@
-# # kong
+# kong
 resource "kubernetes_namespace" "kong" {
   metadata {
     name = "kong"
@@ -19,37 +19,44 @@ resource "helm_release" "kong" {
   }
 
   set {
-    name = "ingressController.enabled"
-    value = "false"
+    name = "admin.enabled"
+    value = true
   }
-
-
   set {
-    name = "dblessConfig.config"
-    value = <<EOT
-_format_version: "2.1"
-
-services:
-- name: gitea
-  url: http://${helm_release.gitea.name}-http.${helm_release.gitea.namespace}.svc.cluster.local:3000
-  routes:
-  - name: gitea
-    hosts:
-    - gitea.infra.local
-- name: keycloak
-  url: http://${helm_release.keycloak.name}-keycloak.${helm_release.keycloak.namespace}.svc.cluster.local
-  routes:
-  - name: keycloak
-    hosts:
-    - idp.infra.local
-- name: concourse
-  url: http://${helm_release.concourse.name}-web.${helm_release.concourse.namespace}.svc.cluster.local:8080
-  routes:
-  - name: concourse
-    hosts:
-    - concourse.infra.local
-EOT
-  
+    name = "admin.http.enabled"
+    value = true
+  }
+  set {
+    name = "admin.tls.enabled"
+    value = false
+  }
+  set {
+    name = "postgresql.enabled"
+    value = true
+  }
+  set {
+    name = "postgresql.auth.database"
+    value = "kong"
+  }
+  set {
+    name = "postgresql.auth.username"
+    value = "kong"
+  }
+  set {
+    name = "postgresql.auth.password"
+    value = "kongpassword123"
+  }
+  set {
+    name = "env.database"
+    value = "postgres"
+  }
+  set {
+    name = "env.pg_password"
+    value = "kongpassword123"
+  }
+  set {
+    name = "env.pg_database"
+    value = "kong"
   }
 }
 
@@ -70,6 +77,22 @@ resource "kubernetes_ingress_v1" "ingress_infra" {
         name = "kong-kong-proxy"
         port {
           number = 80
+        }
+      }
+    }
+
+    rule {
+      host = "kong.infra.local"
+      http {
+        path {
+          backend {
+            service {
+              name = "kong-kong-admin"
+              port {
+                number = 8001
+              }
+            }
+          }
         }
       }
     }

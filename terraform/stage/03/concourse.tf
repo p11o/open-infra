@@ -16,7 +16,7 @@ resource "helm_release" "concourse" {
   values = [
     file("./helm/concourse/values.yaml")
   ]
-  
+
     set {
         name = "web.env[3].name"
         value = "CONCOURSE_OIDC_CLIENT_ID"
@@ -44,19 +44,16 @@ resource "helm_release" "concourse" {
 
 }
 
-resource "keycloak_openid_client" "concourse_client" {
-  realm_id            = keycloak_realm.infra.id
-  client_id           = "concourse"
+resource "kong_service" "concourse" {
+    name        = "concourse"
+    protocol    = "http"
+    host        = "${helm_release.concourse.name}-web.${helm_release.concourse.namespace}.svc.cluster.local"
+    port        = 8080
+}
 
-  name                = "concourse"
-  enabled             = true
-
-  standard_flow_enabled = true
-  access_type         = "CONFIDENTIAL"
-  valid_redirect_uris = [
-    "http://concourse.infra.local/sky/issuer/callback"
-  ]
-
-  login_theme = "keycloak"
-
+resource "kong_route" "concourse" {
+    name            = "concourse"
+    protocols       = [ "http", "https" ]
+    hosts           = [ "concourse.infra.local" ]
+    service_id       = kong_service.concourse.id
 }

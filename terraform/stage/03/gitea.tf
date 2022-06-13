@@ -54,3 +54,17 @@ resource "keycloak_openid_client" "gitea_client" {
   login_theme = "keycloak"
 
 }
+
+resource "kong_service" "gitea" {
+    name        = "gitea"
+    protocol    = "http"
+    host        = "${helm_release.gitea.name}-http.${helm_release.gitea.namespace}.svc.cluster.local"
+    port        = 3000
+}
+
+resource "kong_route" "gitea" {
+    name            = "gitea"
+    protocols       = [ "http", "https" ]
+    hosts           = [ "gitea.infra.local" ]
+    service_id       = kong_service.gitea.id
+}
