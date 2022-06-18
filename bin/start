@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+echo "[Stage 00]"
+echo
+
+KIND_OUTPUT=$(kind get clusters 2>&1)
+if [ "$KIND_OUTPUT" -eq "kind" ]
+then
+    echo " -- Kind cluster found.  Stopping."
+    echo " -- Please delete kind cluster and retry to continue."
+    exit 1
+fi
+
+cd terraform/stage/00
+./start
+
+echo
+echo
+echo "[Stage 01]"
+echo
+
+cd ../01
+terraform init && \
+terraform import kubernetes_config_map_v1.coredns kube-system/coredns
+terraform apply -auto-approve
+
+echo
+echo "[Stage 02]"
+echo
+
+cd ../02
+terraform init
+terraform apply -auto-approve
+
+echo
+echo "[Stage 03]"
+echo
+
+cd ../03
+terraform init
+terraform apply -auto-approve
