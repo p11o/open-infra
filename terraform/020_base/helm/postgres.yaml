@@ -1,0 +1,7 @@
+auth:
+  postgresPassword: secretpassword
+primary:
+  service:
+    type: LoadBalancer
+    # TODO single source ip address with coredns
+    loadBalancerIP: 172.20.0.101

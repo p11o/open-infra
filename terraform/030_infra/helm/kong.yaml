@@ -1,0 +1,11 @@
+proxy:
+  loadBalancerIP: 172.20.0.102
+
+ingressController:
+  enabled: false
+
+env:
+  log_level: info
+
+securityContext:
+  runAsUser: 0
