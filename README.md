@@ -11,3 +11,19 @@ Domains=kind
 
 * Restart computer or `sudo systemctl restart systemd-resolved`
 
+## Services
+
+* airflow.kind
+* db.internal (postgres)
+
+
+## Architecture
+
+```mermaid
+flowchart BT
+    subgraph Base
+        k8s
+    end
+    
+     
+```

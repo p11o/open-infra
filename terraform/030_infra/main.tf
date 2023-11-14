@@ -19,7 +19,6 @@ resource "helm_release" "kong" {
     file("helm/kong.yaml")
   ]
 
-  depends_on = [ postgresql_database.kong ]
 }
 
 
