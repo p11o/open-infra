@@ -20,7 +20,7 @@ Domains=kind
 ## Architecture
 
 ```mermaid
-flowchart BT
+flowchart TD
     subgraph 010_base
         k8s
     end
@@ -35,4 +35,7 @@ flowchart BT
         airflow
         kong
     end
+
+    030_infra --> 020_base
+    020_base --> 010_base
 ```
