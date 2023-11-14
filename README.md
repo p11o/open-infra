@@ -1,6 +1,8 @@
 # Infra
 
-## Getting dns working
+## Getting Started
+
+### DNS
 
 ```
 # /etc/systemd/resolve.conf
@@ -10,6 +12,16 @@ Domains=kind
 ```
 
 * Restart computer or `sudo systemctl restart systemd-resolved`
+
+### Running
+
+Run terraform in each terrafor/* subdir in order.
+
+Ex:
+```bash
+cd terraform/010_k8s
+terraform apply -auto-approve
+```
 
 ## Services
 
