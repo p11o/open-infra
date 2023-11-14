@@ -21,9 +21,18 @@ Domains=kind
 
 ```mermaid
 flowchart BT
-    subgraph Base
+    subgraph 010_base
         k8s
     end
-    
-     
+
+    subgraph 020_base
+        metallb
+        coredns
+        postgres
+    end
+
+    subgraph 030_infra
+        airflow
+        kong
+    end
 ```
