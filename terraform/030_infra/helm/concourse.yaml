@@ -1,0 +1,11 @@
+postgresql:
+  enabled: false
+
+concourse:
+  web:
+    postgres:
+      host: postgres-postgresql.db
+
+secrets:
+  postgresUser: concourse
+  postgresPassword: secretconcoursepassword

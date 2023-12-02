@@ -18,43 +18,43 @@ resource "helm_release" "kong" {
   values = [
     file("helm/kong.yaml")
   ]
-
 }
 
 
 #########
-# Airflow
+# Concourse
+
 
 # db
-resource "postgresql_database" "airflow" {
-  name              = "airflow"
-  owner             = postgresql_role.airflow.name
+resource "postgresql_database" "concourse" {
+  name              = "concourse"
+  owner             = postgresql_role.concourse.name
   allow_connections = true
 }
 
-resource "postgresql_role" "airflow" {
-  name     = "airflow"
+resource "postgresql_role" "concourse" {
+  name     = "concourse"
   login    = true
   # TODO single source and hide password
-  password = "secretairflowpassword"
+  password = "secretconcoursepassword"
 }
 
-resource "kubernetes_namespace" "airflow" {
+resource "kubernetes_namespace" "concourse" {
   metadata {
-    name = "airflow"
+    name = "concourse"
   }
 }
 
-resource "helm_release" "airflow" {
-  name       = "airflow"
+resource "helm_release" "concourse" {
+  name       = "concourse"
 
-  repository = "https://airflow.apache.org"
-  chart      = "airflow"
-  namespace  = kubernetes_namespace.airflow.id
+  repository = "https://concourse-charts.storage.googleapis.com"
+  chart      = "concourse"
+  namespace  = kubernetes_namespace.concourse.id
 
   values = [
-    file("helm/airflow.yaml")
+    file("helm/concourse.yaml")
   ]
 
-  depends_on = [ postgresql_database.airflow ]
+  depends_on = [ postgresql_database.concourse ]
 }

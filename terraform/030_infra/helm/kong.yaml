@@ -9,3 +9,14 @@ env:
 
 securityContext:
   runAsUser: 0
+
+dblessConfig:
+  config: |
+    _format_version: "1.1"
+    services:
+    - name: concourse
+      url: http://concourse.kind
+      routes:
+      - name: concourse
+        paths:
+        - "/"
