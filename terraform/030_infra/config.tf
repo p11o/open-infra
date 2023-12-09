@@ -22,7 +22,7 @@ provider "kubernetes" {
 }
 
 provider "postgresql" {
-  host            = "172.20.0.101"
+  host            = "172.19.0.101"
   port            = 5432
   database        = "postgres"
   username        = "postgres"

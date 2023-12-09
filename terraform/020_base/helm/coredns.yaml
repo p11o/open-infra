@@ -10,15 +10,15 @@ servers:
     # TODO probs better way to do parameters
     parameters: ANY ANY kind.
     configBlock: |
-      answer "{{ .Name }} 60 IN A 172.20.0.102"
+      answer "{{ .Name }} 60 IN A 172.19.0.102"
     # TODO single source IP address
   - name: template
     parameters: ANY ANY db.internal.
     configBlock: |
-      answer "db.internal 60 IN A 172.20.0.101"
+      answer "db.internal 60 IN A 172.19.0.101"
   - name: ready
   - name: health
     configBlock: lameduck 5s
 serviceType: LoadBalancer
 service:
-  loadBalancerIP: 172.20.0.100
+  loadBalancerIP: 172.19.0.100

@@ -1,5 +1,5 @@
 proxy:
-  loadBalancerIP: 172.20.0.102
+  loadBalancerIP: 172.19.0.102
 
 ingressController:
   enabled: false

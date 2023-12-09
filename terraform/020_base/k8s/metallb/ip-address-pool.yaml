@@ -7,4 +7,4 @@ metadata:
     component: metallb-config
 spec:
   addresses:
-  - 172.20.0.100-172.20.0.102
+  - 172.19.0.100-172.19.0.102

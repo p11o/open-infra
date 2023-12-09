@@ -4,10 +4,12 @@
 
 ### DNS
 
+You will have to configure your resolved.conf to point to the network interface.  Look for the bridge interface with state UP.  You can find this using the `ip addr` command.
+
 ```
-# /etc/systemd/resolve.conf
+# /etc/systemd/resolved.conf
 [Resolve]
-DNS=172.20.0.100
+DNS=172.19.0.100
 Domains=kind
 ```
 
