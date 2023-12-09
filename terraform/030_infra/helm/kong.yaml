@@ -1,5 +1,9 @@
 proxy:
   loadBalancerIP: 172.19.0.102
+  stream:
+  - containerPort: 2222
+    servicePort: 2222
+    protocol: TCP
 
 ingressController:
   enabled: false
@@ -15,8 +19,20 @@ dblessConfig:
     _format_version: "1.1"
     services:
     - name: concourse
-      url: http://concourse.kind
+      url: http://concourse-web.concourse
       routes:
       - name: concourse
-        paths:
-        - "/"
+        hosts:
+        - concourse.kind
+    - name: concourse-web-gateway
+      host: concourse-web-gateway.concourse
+      port: 2222
+      protocol: tcp
+      routes:
+      - name: concourse-tsa
+        sources:
+        - port: 2222
+        destinations:
+        - port: 2222
+        protocols:
+        - tcp

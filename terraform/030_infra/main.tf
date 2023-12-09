@@ -48,7 +48,7 @@ resource "kubernetes_namespace" "concourse" {
 resource "helm_release" "concourse" {
   name       = "concourse"
 
-  repository = "https://concourse-charts.storage.googleapis.com"
+  repository = "oci://registry-1.docker.io/bitnamicharts"
   chart      = "concourse"
   namespace  = kubernetes_namespace.concourse.id
 

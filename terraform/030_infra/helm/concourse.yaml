@@ -1,11 +1,21 @@
+web:
+  externalUrl: concourse.kind
+  extraEnvVars:
+  - name: CONCOURSE_ADD_LOCAL_USER
+    value: admin:admin
+  - name: CONCOURSE_MAIN_TEAM_LOCAL_USER
+    value: admin
+
 postgresql:
   enabled: false
 
-concourse:
-  web:
-    postgres:
-      host: postgres-postgresql.db
+externalDatabase:
+  host: postgres-postgresql.db
+  port: 5432
+  user: concourse
+  password: "secretconcoursepassword"
+  database: concourse
 
-secrets:
-  postgresUser: concourse
-  postgresPassword: secretconcoursepassword
+service:
+  web:
+    type: ClusterIP
