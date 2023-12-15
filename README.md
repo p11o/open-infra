@@ -27,7 +27,7 @@ terraform apply -auto-approve
 
 ## Services
 
-* airflow.kind
+* concourse.kind
 * db.internal (postgres)
 
 
@@ -43,10 +43,11 @@ flowchart TD
         metallb
         coredns
         postgres
+        minio
     end
 
     subgraph 030_infra
-        airflow
+        concourse
         kong
     end
 
