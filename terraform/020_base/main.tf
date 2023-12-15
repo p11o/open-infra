@@ -72,3 +72,19 @@ resource "helm_release" "db" {
     file("helm/postgres.yaml")
   ]
 }
+
+
+
+#########
+# S3
+
+resource "kubernetes_manifest" "minio_deployment" {
+  manifest = yamldecode(file("${path.module}/k8s/minio/deployment.yaml"))
+
+  depends_on = [ kubernetes_namespace.db ]
+}
+resource "kubernetes_manifest" "minio_service" {
+  manifest = yamldecode(file("${path.module}/k8s/minio/service.yaml"))
+
+  depends_on = [ kubernetes_namespace.db ]
+}
